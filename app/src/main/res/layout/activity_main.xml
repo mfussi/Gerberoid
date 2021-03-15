@@ -7,35 +7,37 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="se.pp.mc.android.Gerberoid.activities.MainActivity">
-    <android.support.v7.widget.Toolbar
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	app:logo="@drawable/ic_launcher"
-	android:id="@+id/toolbar"
-	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
-	android:background="?attr/colorPrimary"
-	android:minHeight="?attr/actionBarSize"
-	style="@style/ToolBarStyle" />
-    <android.support.v4.widget.DrawerLayout
-        android:id="@+id/drawer_layout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-	android:layout_weight="1">
 
-        <include layout="@layout/content_main" />
+	<androidx.appcompat.widget.Toolbar
+		app:logo="@drawable/ic_launcher"
+		android:id="@+id/toolbar"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="?attr/colorPrimary"
+		android:minHeight="?attr/actionBarSize"
+		style="@style/ToolBarStyle" />
 
-        <include layout="@layout/tools_drawer" />
+		<androidx.drawerlayout.widget.DrawerLayout
+			android:id="@+id/drawer_layout"
+			android:layout_width="match_parent"
+			android:layout_height="0dp"
+			android:layout_weight="1">
 
-    </android.support.v4.widget.DrawerLayout>
-    <android.support.v7.widget.Toolbar
-	android:id="@+id/toolbar_bottom"
-	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
-	android:background="?attr/colorPrimary"
-	android:minHeight="?attr/actionBarSize"
-	style="@style/ToolBarStyle">
+			<include layout="@layout/content_main" />
+			<include layout="@layout/tools_drawer" />
 
-	<include layout="@layout/bottom_toolbar" />
+		</androidx.drawerlayout.widget.DrawerLayout>
 
-    </android.support.v7.widget.Toolbar>
+		<androidx.appcompat.widget.Toolbar
+		android:id="@+id/toolbar_bottom"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="?attr/colorPrimary"
+		android:minHeight="?attr/actionBarSize"
+		style="@style/ToolBarStyle">
+
+			<include layout="@layout/bottom_toolbar" />
+
+		</androidx.appcompat.widget.Toolbar>
+
 </LinearLayout>

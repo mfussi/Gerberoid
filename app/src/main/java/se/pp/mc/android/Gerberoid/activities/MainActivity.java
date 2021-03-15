@@ -27,11 +27,12 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -39,8 +40,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 
-import com.kennyc.bottomsheet.BottomSheet;
 import com.kennyc.bottomsheet.BottomSheetListener;
+import com.kennyc.bottomsheet.BottomSheetMenuDialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -219,18 +220,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void addLayers() {
 
-        new BottomSheet.Builder(this)
+        new BottomSheetMenuDialogFragment.Builder(this)
                 .setSheet(R.menu.bottom_toolbar)
                 .setTitle(R.string.add_layers_title)
                 .setListener(new BottomSheetListener() {
 
                     @Override
-                    public void onSheetShown(@NonNull BottomSheet bottomSheet, @Nullable Object object) {
+                    public void onSheetShown(@NonNull BottomSheetMenuDialogFragment bottomSheet, @Nullable Object object) {
 
                     }
 
                     @Override
-                    public void onSheetItemSelected(@NonNull BottomSheet bottomSheet, MenuItem item, @Nullable Object object) {
+                    public void onSheetItemSelected(@NonNull BottomSheetMenuDialogFragment bottomSheet, MenuItem item, @Nullable Object object) {
 
                         switch (item.getItemId()) {
 
@@ -250,11 +251,10 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onSheetDismissed(@NonNull BottomSheet bottomSheet, @Nullable Object object, int dismissEvent) {
+                    public void onSheetDismissed(@NonNull BottomSheetMenuDialogFragment bottomSheet, @Nullable Object object, int dismissEvent) {
 
                     }
-
-                }).show();
+                }).show(getSupportFragmentManager());
 
     }
 
