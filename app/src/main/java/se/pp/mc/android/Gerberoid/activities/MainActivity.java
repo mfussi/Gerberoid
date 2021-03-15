@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
     private View btnAdd;
     private View btnClear;
+    private View ivFullscreen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,24 +90,13 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar_bottom);
 
         btnAdd = findViewById(R.id.btnAdd);
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                addLayers();
-            }
-
-        });
+        btnAdd.setOnClickListener(v -> addLayers());
 
         btnClear = findViewById(R.id.btnClear);
-        btnClear.setOnClickListener(new View.OnClickListener() {
+        btnClear.setOnClickListener(v -> clearLayers());
 
-            @Override
-            public void onClick(View v) {
-                clearLayers();
-            }
-
-        });
+        ivFullscreen = findViewById(R.id.ivFullscreen);
+        ivFullscreen.setOnClickListener(view -> startActivity(FullscreenActivity.Companion.newIntent(MainActivity.this)));
 
         progress = findViewById(R.id.progress);
 
