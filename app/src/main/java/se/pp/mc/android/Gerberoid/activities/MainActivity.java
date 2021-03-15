@@ -26,6 +26,9 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -183,14 +186,16 @@ public class MainActivity extends AppCompatActivity {
             Preferences.OverlayProperties props = prefs.getOverlayProperties();
 
             InputStream ims = getAssets().open(props.getFile());
-            Drawable d = Drawable.createFromStream(ims, null);
+            Bitmap d = BitmapFactory.decodeStream(ims);
+
+            int rotation = (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) ? 90 : 0;
+            ivOverlay.setImageBitmap(rotateImage(d, rotation));
+
+            ivOverlay.setAlpha(props.getAlpha());
+            ivOverlay.setVisibility(View.VISIBLE);
 
             ivShowOverlay.setImageResource(R.drawable.ic_baseline_image_24);
 
-            ivOverlay.setRotation((getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) ? 90.0f : 0.0f);
-            ivOverlay.setImageDrawable(d);
-            ivOverlay.setAlpha(props.getAlpha());
-            ivOverlay.setVisibility(View.VISIBLE);
 
             prefs.storeOverlayProperties(new Preferences.OverlayProperties(props.getFile(), props.getAlpha(), true));
 
@@ -209,6 +214,16 @@ public class MainActivity extends AppCompatActivity {
         Preferences.OverlayProperties props = prefs.getOverlayProperties();
 
         prefs.storeOverlayProperties(new Preferences.OverlayProperties(props.getFile(), props.getAlpha(), false));
+
+    }
+
+    private Bitmap rotateImage(Bitmap bitmapOrg, int rotation){
+
+        Matrix matrix = new Matrix();
+        matrix.postRotate(rotation);
+
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmapOrg, bitmapOrg.getWidth(), bitmapOrg.getHeight(), true);
+        return Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
 
     }
 
@@ -236,7 +251,22 @@ public class MainActivity extends AppCompatActivity {
 
     public void onConfigurationChanged(@NotNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        ivOverlay.setRotation((getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) ? 90.0f : 0.0f);
+
+        try {
+
+            Preferences prefs = ((GerberoidApplication)getApplication()).getPreferences();
+            Preferences.OverlayProperties props = prefs.getOverlayProperties();
+
+            InputStream ims = getAssets().open(props.getFile());
+            Bitmap d = BitmapFactory.decodeStream(ims);
+
+            int rotation = (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) ? 90 : 0;
+            ivOverlay.setImageBitmap(rotateImage(d, rotation));
+
+        } catch(IOException ex) {
+            return;
+        }
+
     }
 
     @Override
