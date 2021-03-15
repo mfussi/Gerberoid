@@ -43,6 +43,8 @@ import android.widget.Spinner;
 import com.kennyc.bottomsheet.BottomSheetListener;
 import com.kennyc.bottomsheet.BottomSheetMenuDialogFragment;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +53,9 @@ import se.pp.mc.android.Gerberoid.adapters.LayerSpinnerAdapter;
 import se.pp.mc.android.Gerberoid.gerber.DisplayOptions;
 import se.pp.mc.android.Gerberoid.model.GerberZipEntry;
 import se.pp.mc.android.Gerberoid.model.FileType;
+import se.pp.mc.android.Gerberoid.tasks.GerberFile;
+import se.pp.mc.android.Gerberoid.tasks.SourceDescriptor;
+import se.pp.mc.android.Gerberoid.tasks.FileSourceDescriptor;
 import se.pp.mc.android.Gerberoid.tasks.LayerLoadCallback;
 import se.pp.mc.android.Gerberoid.tasks.LayerLoadTask;
 import se.pp.mc.android.Gerberoid.tasks.LoadRequest;
@@ -58,6 +63,7 @@ import se.pp.mc.android.Gerberoid.gerber.GerberViewer;
 import se.pp.mc.android.Gerberoid.gerber.Layers;
 import se.pp.mc.android.Gerberoid.R;
 import se.pp.mc.android.Gerberoid.gerber.ViewPort;
+import se.pp.mc.android.Gerberoid.tasks.UriSourceDescriptor;
 import se.pp.mc.android.Gerberoid.utils.Preferences;
 import se.pp.mc.android.Gerberoid.views.ToolsDrawer;
 
@@ -67,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_DRILL = 10002;
     private static final int REQUEST_ARCHIVE = 10003;
     private static final int REQUEST_SELECT_ARCHIVE = 10004;
+
+    private final List<GerberFile<? extends SourceDescriptor>> loadedFiles = new ArrayList<>();
 
     private GerberViewer gerber;
     private Layers layers;
@@ -96,7 +104,11 @@ public class MainActivity extends AppCompatActivity {
         btnClear.setOnClickListener(v -> clearLayers());
 
         ivFullscreen = findViewById(R.id.ivFullscreen);
-        ivFullscreen.setOnClickListener(view -> startActivity(FullscreenActivity.Companion.newIntent(MainActivity.this)));
+        ivFullscreen.setOnClickListener(view -> {
+                showFullscreen();
+            }
+
+        );
 
         progress = findViewById(R.id.progress);
 
@@ -134,6 +146,65 @@ public class MainActivity extends AppCompatActivity {
         toolsDrawer = findViewById(R.id.tools_drawer);
         if (toolsDrawer != null)
             new ToolsDrawer(this, toolsDrawer, displayOptions);
+    }
+
+    private void showFullscreen() {
+
+        findViewById(R.id.toolbar_bottom).setVisibility(View.GONE);
+        findViewById(R.id.toolbar).setVisibility(View.GONE);
+        ivFullscreen.setVisibility(View.GONE);
+
+        hideSystemUI();
+
+    }
+
+    private void exitFullscreen() {
+
+        findViewById(R.id.toolbar_bottom).setVisibility(View.VISIBLE);
+        findViewById(R.id.toolbar).setVisibility(View.VISIBLE);
+        ivFullscreen.setVisibility(View.VISIBLE);
+
+        showSystemUI();
+
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if(ivFullscreen.getVisibility() == View.GONE){
+            exitFullscreen();
+            return;
+        }
+
+        super.onBackPressed();
+
+    }
+
+    private void hideSystemUI() {
+        // Enables regular immersive mode.
+        // For "lean back" mode, remove SYSTEM_UI_FLAG_IMMERSIVE.
+        // Or for "sticky immersive," replace it with SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_IMMERSIVE
+                        // Set the content to appear under the system bars so that the
+                        // content doesn't resize when the system bars hide and show.
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        // Hide the nav bar and status bar
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN);
+    }
+
+    // Shows the system bars by removing all the flags
+// except for the ones that make the content appear under the system bars.
+    private void showSystemUI() {
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
     }
 
     @Override
@@ -255,12 +326,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void SelectFile(GerberZipEntry[] files) {
 
-        final List<LoadRequest> requests = new ArrayList<>();
+        final List<LoadRequest<FileSourceDescriptor>> requests = new ArrayList<>();
 
         for (GerberZipEntry e : files) {
 
             if(e != null && e.getFile() != null && e.getType() != null) {
-                requests.add(new LoadRequest(e.getFile(), e.getType()));
+                requests.add(new LoadRequest<>(new GerberFile<>(new FileSourceDescriptor(e.getFile()), e.getType())));
             }
 
         }
@@ -293,12 +364,11 @@ public class MainActivity extends AppCompatActivity {
     private final LayerLoadCallback mLoadCallback = new LayerLoadCallback() {
 
         @Override
-        public void onStarted() {
-            progress.setVisibility(View.VISIBLE);
-        }
+        public void onFinished(boolean success, @NotNull List<? extends GerberFile<? extends SourceDescriptor>> files) {
 
-        @Override
-        public void onFinished(boolean success) {
+            if(success) {
+                loadedFiles.addAll(files);
+            }
 
             progress.setVisibility(View.GONE);
             if (!success) {
@@ -311,6 +381,11 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
+        }
+
+        @Override
+        public void onStarted() {
+            progress.setVisibility(View.VISIBLE);
         }
 
     };
@@ -349,10 +424,10 @@ public class MainActivity extends AppCompatActivity {
 
                     if (clipData != null) {
 
-                        final List<LoadRequest> loadRequests = new ArrayList<>();
+                        final List<LoadRequest<UriSourceDescriptor>> loadRequests = new ArrayList<>();
                         final int n = clipData.getItemCount();
                         for (int i = 0; i < n; i++) {
-                            loadRequests.add(new LoadRequest(clipData.getItemAt(i).getUri(), requestCode == REQUEST_GERBER ? FileType.GERBER : FileType.DRILL));
+                            loadRequests.add(new LoadRequest<>(new GerberFile<>(new UriSourceDescriptor(clipData.getItemAt(i).getUri()), requestCode == REQUEST_GERBER ? FileType.GERBER : FileType.DRILL)));
                         }
 
                         new LayerLoadTask(getApplicationContext(), layers, mLoadCallback).execute(loadRequests.toArray(new LoadRequest[0]));
@@ -361,7 +436,7 @@ public class MainActivity extends AppCompatActivity {
 
                         final Uri uri = data.getData();
                         if(uri != null) {
-                            new LayerLoadTask(getApplicationContext(), layers, mLoadCallback).execute(new LoadRequest(uri, requestCode == REQUEST_GERBER ? FileType.GERBER : FileType.DRILL));
+                            new LayerLoadTask(getApplicationContext(), layers, mLoadCallback).execute(new LoadRequest<>(new GerberFile<>(new UriSourceDescriptor(uri), requestCode == REQUEST_GERBER ? FileType.GERBER : FileType.DRILL)));
                         }
 
                     }
@@ -371,6 +446,9 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
         }
+
+        super.onActivityResult(requestCode, resultCode, data);
+
     }
 
     public Layers getLayers() {

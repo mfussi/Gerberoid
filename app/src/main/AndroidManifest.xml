@@ -22,8 +22,6 @@
 
         <activity android:name=".activities.ArchiveActivity" />
 
-        <activity android:name=".activities.FullscreenActivity" android:screenOrientation="landscape" />
-
     </application>
 
 </manifest>
