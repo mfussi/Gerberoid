@@ -19,11 +19,14 @@
 
 package se.pp.mc.android.Gerberoid.activities;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -38,6 +41,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.kennyc.bottomsheet.BottomSheetListener;
@@ -45,6 +49,8 @@ import com.kennyc.bottomsheet.BottomSheetMenuDialogFragment;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,10 +90,12 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private View toolsDrawer;
     private View progress;
+    private ImageView ivOverlay;
 
     private View btnAdd;
     private View btnClear;
     private View ivFullscreen;
+    private ImageView ivShowOverlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +117,19 @@ public class MainActivity extends AppCompatActivity {
             }
 
         );
+
+        ivShowOverlay = findViewById(R.id.ivShowOverlay);
+        ivShowOverlay.setOnClickListener(view -> {
+
+            if ((ivOverlay.getVisibility() == View.GONE)) {
+                showOverlay();
+            } else {
+                hideOverlay();
+            }
+
+        });
+
+        ivOverlay = findViewById(R.id.ivOverlay);
 
         progress = findViewById(R.id.progress);
 
@@ -142,10 +163,53 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
+        if(prefs.getOverlayProperties().getVisibility()){
+            showOverlay();
+        } else {
+            hideOverlay();
+        }
+
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         toolsDrawer = findViewById(R.id.tools_drawer);
         if (toolsDrawer != null)
             new ToolsDrawer(this, toolsDrawer, displayOptions);
+    }
+
+    private void showOverlay() {
+
+        try {
+
+            Preferences prefs = ((GerberoidApplication)getApplication()).getPreferences();
+            Preferences.OverlayProperties props = prefs.getOverlayProperties();
+
+            InputStream ims = getAssets().open(props.getFile());
+            Drawable d = Drawable.createFromStream(ims, null);
+
+            ivShowOverlay.setImageResource(R.drawable.ic_baseline_image_24);
+
+            ivOverlay.setRotation((getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) ? 90.0f : 0.0f);
+            ivOverlay.setImageDrawable(d);
+            ivOverlay.setAlpha(props.getAlpha());
+            ivOverlay.setVisibility(View.VISIBLE);
+
+            prefs.storeOverlayProperties(new Preferences.OverlayProperties(props.getFile(), props.getAlpha(), true));
+
+        } catch(IOException ex) {
+            return;
+        }
+
+    }
+
+    private void hideOverlay(){
+
+        ivOverlay.setVisibility(View.GONE);
+        ivShowOverlay.setImageResource(R.drawable.ic_baseline_image_not_supported_24);
+
+        Preferences prefs = ((GerberoidApplication)getApplication()).getPreferences();
+        Preferences.OverlayProperties props = prefs.getOverlayProperties();
+
+        prefs.storeOverlayProperties(new Preferences.OverlayProperties(props.getFile(), props.getAlpha(), false));
+
     }
 
     private void showFullscreen() {
@@ -153,6 +217,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.toolbar_bottom).setVisibility(View.GONE);
         findViewById(R.id.toolbar).setVisibility(View.GONE);
         ivFullscreen.setVisibility(View.GONE);
+        ivShowOverlay.setVisibility(View.GONE);
 
         hideSystemUI();
 
@@ -163,9 +228,15 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.toolbar_bottom).setVisibility(View.VISIBLE);
         findViewById(R.id.toolbar).setVisibility(View.VISIBLE);
         ivFullscreen.setVisibility(View.VISIBLE);
+        ivShowOverlay.setVisibility(View.VISIBLE);
 
         showSystemUI();
 
+    }
+
+    public void onConfigurationChanged(@NotNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        ivOverlay.setRotation((getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) ? 90.0f : 0.0f);
     }
 
     @Override

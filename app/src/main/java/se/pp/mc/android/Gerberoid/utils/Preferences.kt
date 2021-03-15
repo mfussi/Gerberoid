@@ -21,6 +21,10 @@ private const val PREF_DCODES_COLOR = "pref.display.dcodecolor"
 private const val PREF_GRID_COLOR = "pref.display.gridcolor"
 private const val PREF_NEGATIVE_OBJECTS_COLOR = "pref.display.negativeobjectcolor"
 
+private const val PREF_OVERLAY_FILE = "pref.overlay.file"
+private const val PREF_OVERLAY_ALPHA = "pref.overlay.alpha"
+private const val PREF_OVERLAY_VISIBLE = "pref.overlay.visible"
+
 class Preferences(applicationContext : Context) {
 
     private val preferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
@@ -69,6 +73,26 @@ class Preferences(applicationContext : Context) {
             readColor(preferences, PREF_NEGATIVE_OBJECTS_COLOR) { c -> options.SetNegativeObjectsVisibleColor(c) }
 
         }
+
+    }
+
+    fun storeOverlayProperties(properties : OverlayProperties) {
+
+        preferences.edit().apply {
+
+            putString(PREF_OVERLAY_FILE, properties.file)
+            putFloat(PREF_OVERLAY_ALPHA, properties.alpha)
+            putBoolean(PREF_OVERLAY_VISIBLE, properties.visibility)
+
+        }.apply()
+
+    }
+
+    fun getOverlayProperties() : OverlayProperties {
+
+        return OverlayProperties(preferences.getString(PREF_OVERLAY_FILE, null) ?: "overlay.png",
+            preferences.getFloat(PREF_OVERLAY_ALPHA, 1.0f),
+            preferences.getBoolean(PREF_OVERLAY_VISIBLE, false))
 
     }
 
@@ -125,5 +149,10 @@ class Preferences(applicationContext : Context) {
         return NO_COLOR
 
     }
+
+
+
+    data class OverlayProperties(val file : String, val alpha : Float, val visibility : Boolean)
+
 
 }

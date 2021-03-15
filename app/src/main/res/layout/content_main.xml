@@ -14,13 +14,34 @@
 	android:background="@color/gerber_viewer_background" />
 
 	<ImageView
-		android:layout_width="64dp"
-		android:layout_height="64dp"
-		app:tint="@android:color/white"
-		android:padding="16dp"
-		android:layout_gravity="top|end"
-		app:srcCompat="@drawable/ic_baseline_fullscreen_24"
-		android:id="@+id/ivFullscreen" />
+		android:id="@+id/ivOverlay"
+		android:scaleType="fitXY"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent" />
+
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:layout_gravity="top|end">
+
+		<ImageView
+			android:layout_width="64dp"
+			android:layout_height="64dp"
+			app:tint="@android:color/white"
+			android:padding="16dp"
+			app:srcCompat="@drawable/ic_baseline_fullscreen_24"
+			android:id="@+id/ivFullscreen" />
+
+		<ImageView
+			android:layout_width="64dp"
+			android:layout_height="64dp"
+			app:tint="@android:color/white"
+			android:padding="16dp"
+			app:srcCompat="@drawable/ic_baseline_image_not_supported_24"
+			android:id="@+id/ivShowOverlay" />
+
+	</LinearLayout>
 
 	<include layout="@layout/layout_fullscreen_progress" />
 
