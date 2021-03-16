@@ -45,10 +45,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.Spinner;
-
-import com.kennyc.bottomsheet.BottomSheetListener;
-import com.kennyc.bottomsheet.BottomSheetMenuDialogFragment;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -109,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar_bottom);
 
         btnAdd = findViewById(R.id.btnAdd);
-        btnAdd.setOnClickListener(v -> addLayers());
+        btnAdd.setOnClickListener(v -> addLayers(v));
 
         btnClear = findViewById(R.id.btnClear);
         btnClear.setOnClickListener(v -> clearLayers());
@@ -380,43 +378,32 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private void addLayers() {
+    private void addLayers(View v) {
 
-        new BottomSheetMenuDialogFragment.Builder(this)
-                .setSheet(R.menu.bottom_toolbar)
-                .setTitle(R.string.add_layers_title)
-                .setListener(new BottomSheetListener() {
+        PopupMenu popup = new PopupMenu(this, v);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.bottom_toolbar, popup.getMenu());
+        popup.setOnMenuItemClickListener(menuItem -> {
 
-                    @Override
-                    public void onSheetShown(@NonNull BottomSheetMenuDialogFragment bottomSheet, @Nullable Object object) {
+            switch (menuItem.getItemId()) {
 
-                    }
+                case R.id.action_gerber:
+                    SelectFile(REQUEST_GERBER);
+                    return true;
+                case R.id.action_drill:
+                    SelectFile(REQUEST_DRILL);
+                    return true;
+                case R.id.action_archive:
+                    SelectFile(REQUEST_ARCHIVE);
+                    return true;
 
-                    @Override
-                    public void onSheetItemSelected(@NonNull BottomSheetMenuDialogFragment bottomSheet, MenuItem item, @Nullable Object object) {
+            }
 
-                        switch (item.getItemId()) {
+            return false;
 
-                            case R.id.action_gerber:
-                                SelectFile(REQUEST_GERBER);
-                                break;
-                            case R.id.action_drill:
-                                SelectFile(REQUEST_DRILL);
-                                break;
-                            case R.id.action_archive:
-                                SelectFile(REQUEST_ARCHIVE);
-                                break;
+        });
 
-
-                        }
-
-                    }
-
-                    @Override
-                    public void onSheetDismissed(@NonNull BottomSheetMenuDialogFragment bottomSheet, @Nullable Object object, int dismissEvent) {
-
-                    }
-                }).show(getSupportFragmentManager());
+        popup.show();
 
     }
 
