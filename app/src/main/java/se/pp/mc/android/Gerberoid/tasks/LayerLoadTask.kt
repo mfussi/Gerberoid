@@ -22,6 +22,7 @@ class LayerLoadTask(applicationContext: Context, private val layers: Layers, cal
     }
 
     override fun doInBackground(vararg request: LoadRequest<out SourceDescriptor>): Pair<Boolean, List<GerberFile<out SourceDescriptor>>> {
+        Looper.prepare()
 
         var success = true
         val firstLayer = this.layers.activeLayer

@@ -19,7 +19,6 @@
 
 package se.pp.mc.android.Gerberoid.activities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.Intent;
@@ -29,12 +28,10 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -47,6 +44,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -97,6 +95,8 @@ public class MainActivity extends AppCompatActivity {
     private View btnClear;
     private View ivFullscreen;
     private ImageView ivShowOverlay;
+
+    int defaultSystemUI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -280,10 +280,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void hideSystemUI() {
+
         // Enables regular immersive mode.
         // For "lean back" mode, remove SYSTEM_UI_FLAG_IMMERSIVE.
         // Or for "sticky immersive," replace it with SYSTEM_UI_FLAG_IMMERSIVE_STICKY
         View decorView = getWindow().getDecorView();
+        defaultSystemUI = decorView.getSystemUiVisibility();
+
         decorView.setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_IMMERSIVE
                         // Set the content to appear under the system bars so that the
@@ -300,10 +303,7 @@ public class MainActivity extends AppCompatActivity {
 // except for the ones that make the content appear under the system bars.
     private void showSystemUI() {
         View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        decorView.setSystemUiVisibility(defaultSystemUI);
     }
 
     @Override
@@ -445,7 +445,11 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         }
 
-        startActivityForResult(intent, requestCode);
+        try {
+            startActivityForResult(intent, requestCode);
+        } catch (Exception e){
+            Toast.makeText(this, "Unable to open file explorer", Toast.LENGTH_LONG).show();
+        }
 
     }
 

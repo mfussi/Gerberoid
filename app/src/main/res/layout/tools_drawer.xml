@@ -23,7 +23,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 	        style="@style/ImageButtonStyle"
-		android:drawableTop="@drawable/grid"
+		app:drawableTopCompat="@drawable/grid"
 		android:textOn="@string/show_grid"
 		android:textOff="@string/hide_grid"/>
 	    <ImageButton
@@ -38,7 +38,7 @@
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    style="@style/ImageButtonStyle"
-	    android:drawableTop="@drawable/pad_sketch"
+	    app:drawableTopCompat="@drawable/pad_sketch"
 	    android:textOn="@string/spots_sketch"
 	    android:textOff="@string/spots_sketch"/>
 	<ToggleButton
@@ -46,7 +46,7 @@
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    style="@style/ImageButtonStyle"
-	    android:drawableTop="@drawable/showtrack"
+	    app:drawableTopCompat="@drawable/showtrack"
 	    android:textOn="@string/lines_sketch"
 	    android:textOff="@string/lines_sketch"/>
 	<ToggleButton
@@ -54,7 +54,7 @@
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    style="@style/ImageButtonStyle"
-	    android:drawableTop="@drawable/opt_show_polygon"
+	    app:drawableTopCompat="@drawable/opt_show_polygon"
 	    android:textOn="@string/poly_sketch"
 	    android:textOff="@string/poly_sketch"/>
 	<LinearLayout
@@ -67,7 +67,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 	        style="@style/ImageButtonStyle"
-		android:drawableTop="@drawable/gerbview_show_negative_objects"
+		app:drawableTopCompat="@drawable/gerbview_show_negative_objects"
 		android:textOn="@string/neg_ghost"
 		android:textOff="@string/neg_ghost"/>
 	    <ImageButton
@@ -87,7 +87,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 	        style="@style/ImageButtonStyle"
-		android:drawableTop="@drawable/show_dcodenumber"
+		app:drawableTopCompat="@drawable/show_dcodenumber"
 		android:textOn="@string/show_dcode"
 		android:textOff="@string/show_dcode"/>
 	    <ImageButton
@@ -107,7 +107,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 	        style="@style/ImageButtonStyle"
-		android:drawableTop="@drawable/gbr_select_mode0"
+		app:drawableTopCompat="@drawable/gbr_select_mode0"
 		android:textOn="@string/layers_mode_0"
 		android:textOff="@string/layers_mode_0"/>
 	    <ToggleButton
@@ -115,7 +115,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 	        style="@style/ImageButtonStyle"
-		android:drawableTop="@drawable/gbr_select_mode1"
+		app:drawableTopCompat="@drawable/gbr_select_mode1"
 		android:textOn="@string/layers_mode_1"
 		android:textOff="@string/layers_mode_1"/>
 	    <ToggleButton
@@ -123,7 +123,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 	        style="@style/ImageButtonStyle"
-		android:drawableTop="@drawable/gbr_select_mode2"
+		app:drawableTopCompat="@drawable/gbr_select_mode2"
 		android:textOn="@string/layers_mode_2"
 		android:textOff="@string/layers_mode_2"/>
 	</RadioGroup>
