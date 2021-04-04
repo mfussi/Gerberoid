@@ -7,6 +7,14 @@ is part of the [KiCad][1] EDA suite.
 <a href="https://f-droid.org/packages/se.pp.mc.android.Gerberoid/" target="_blank">
 <img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="80"/></a>
 
+Webserver
+-------
+This Gerberoid Fork can be remote controlled using an REST API. See the [documentation](webserver-definition.md)
+Simply replace http://localhost:6060 with the IP of your android device, e.g.: http://192.168.0.1:6060
+
+For example - enable fullscreen mode:
+[POST] http://192.168.0.1:6060/api/control/fullscreen?enable=true
+
 License
 -------
 

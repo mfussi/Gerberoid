@@ -619,6 +619,10 @@ public class MainActivity extends AppCompatActivity {
         layers.SetLayerColor(layer, color);
     }
 
+    public void setLayerVisibility(boolean visibility, int layer) {
+        layers.SetLayerVisible(layer, visibility);
+    }
+
 }
 
 

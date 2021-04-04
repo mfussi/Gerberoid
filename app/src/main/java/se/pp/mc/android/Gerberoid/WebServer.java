@@ -171,6 +171,18 @@ public class WebServer {
                             return sendResponse(false);
                         }
 
+                    } else if ("layer/visibility".equals(function)){
+
+                        final boolean visibility = getParameter(session, "visibility", true);
+                        final int layer = getParameter(session, "layer", 0);
+
+                        if(layer >= 0) {
+                            execute(() -> activity.setLayerVisibility(visibility, layer));
+                            return sendResponse(true);
+                        } else {
+                            return sendResponse(false);
+                        }
+
                     }
 
                 }

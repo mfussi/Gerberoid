@@ -1,0 +1,348 @@
+{
+	"info": {
+		"_postman_id": "c6eae7c3-5537-4189-b9ad-4937990304ec",
+		"name": "Gerberoid",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Fullscreen",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:6060/api/control/fullscreen?enable=true",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6060",
+					"path": [
+						"api",
+						"control",
+						"fullscreen"
+					],
+					"query": [
+						{
+							"key": "enable",
+							"value": "true"
+						}
+					]
+				},
+				"description": "Toggles the fullscreen. enable = true/false"
+			},
+			"response": []
+		},
+		{
+			"name": "Overlay",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:6060/api/control/overlay?enable=false",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6060",
+					"path": [
+						"api",
+						"control",
+						"overlay"
+					],
+					"query": [
+						{
+							"key": "enable",
+							"value": "false"
+						}
+					]
+				},
+				"description": "Toggles overlay mode. If enabled an color correction overlay will be shown. enable = true/false"
+			},
+			"response": []
+		},
+		{
+			"name": "Move",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:6060/api/control/move?x=0&y=80&absolute=false",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6060",
+					"path": [
+						"api",
+						"control",
+						"move"
+					],
+					"query": [
+						{
+							"key": "x",
+							"value": "0"
+						},
+						{
+							"key": "y",
+							"value": "80"
+						},
+						{
+							"key": "absolute",
+							"value": "false"
+						}
+					]
+				},
+				"description": "Moves the viewport of the gerber frame. Given x and y coordinates (in pixels). The coordinates can be absolute or relative."
+			},
+			"response": []
+		},
+		{
+			"name": "Scale",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:6060/api/control/scale?scale=1.2&absolute=false",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6060",
+					"path": [
+						"api",
+						"control",
+						"scale"
+					],
+					"query": [
+						{
+							"key": "scale",
+							"value": "1.2"
+						},
+						{
+							"key": "absolute",
+							"value": "false"
+						}
+					]
+				},
+				"description": "Sets the scale of the viewport of the gerber frame. Property scale can be provided in absolute or relative values."
+			},
+			"response": []
+		},
+		{
+			"name": "Layer Color",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:6060/api/control/layer/color?color=4&layer=0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6060",
+					"path": [
+						"api",
+						"control",
+						"layer",
+						"color"
+					],
+					"query": [
+						{
+							"key": "color",
+							"value": "4"
+						},
+						{
+							"key": "layer",
+							"value": "0"
+						}
+					]
+				},
+				"description": "Sets the layer colors. Color must be between 0 and 29, see definition of colors in source code. The layer index must be between 0 and 31."
+			},
+			"response": []
+		},
+		{
+			"name": "Layer Visibility",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:6060/api/control/layer/visibility?visibility=true&layer=0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6060",
+					"path": [
+						"api",
+						"control",
+						"layer",
+						"visibility"
+					],
+					"query": [
+						{
+							"key": "visibility",
+							"value": "true"
+						},
+						{
+							"key": "layer",
+							"value": "0"
+						}
+					]
+				},
+				"description": "Sets the layer visibility. Layer must be between 0 and 31."
+			},
+			"response": []
+		},
+		{
+			"name": "Load Gerber",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "file",
+					"file": {
+						"src": "/Users/markus/Desktop/private/Radio Umbau/electronic/interface/audio-interface/export/audio-interface-F_Cu.gbr"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:6060/api/control/load/gerber",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6060",
+					"path": [
+						"api",
+						"control",
+						"load",
+						"gerber"
+					]
+				},
+				"description": "Loads a new layer with a gerber file. The gerber file needs to be provided as POST body. In binary format."
+			},
+			"response": []
+		},
+		{
+			"name": "Load Drill",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "file",
+					"file": {
+						"src": "/Users/markus/Desktop/private/Radio Umbau/electronic/interface/audio-interface/export/audio-interface-NPTH.drl"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:6060/api/control/load/drill",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6060",
+					"path": [
+						"api",
+						"control",
+						"load",
+						"drill"
+					]
+				},
+				"description": "Loads a new layer with a drill file. The gerber file needs to be provided as POST body. In binary format."
+			},
+			"response": []
+		},
+		{
+			"name": "Clear",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:6060/api/control/clear",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6060",
+					"path": [
+						"api",
+						"control",
+						"clear"
+					]
+				},
+				"description": "Removes all layers from current view."
+			},
+			"response": []
+		},
+		{
+			"name": "Zoom In",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:6060/api/control/zoom/in",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6060",
+					"path": [
+						"api",
+						"control",
+						"zoom",
+						"in"
+					]
+				},
+				"description": "Zoom the viewport to the next zoom level."
+			},
+			"response": []
+		},
+		{
+			"name": "Zoom Out",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:6060/api/control/zoom/out",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6060",
+					"path": [
+						"api",
+						"control",
+						"zoom",
+						"out"
+					]
+				},
+				"description": "Zoom the viewport to the previous zoom level."
+			},
+			"response": []
+		},
+		{
+			"name": "Zoom Fit",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:6060/api/control/zoom/fit",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6060",
+					"path": [
+						"api",
+						"control",
+						"zoom",
+						"fit"
+					]
+				},
+				"description": "Zoom the viewport to best fit."
+			},
+			"response": []
+		}
+	]
+}
