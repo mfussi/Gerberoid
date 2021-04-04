@@ -115,7 +115,7 @@ public class WebServer {
                         final String data = files.get("postData");
                         if(data != null && !data.equals("")){
 
-                            execute(() -> activity.load(data, true));
+                            execute(() -> activity.load(data, false));
                             return sendResponse(true);
 
                         } else {

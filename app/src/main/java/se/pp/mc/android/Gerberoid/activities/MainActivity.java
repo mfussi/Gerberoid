@@ -578,11 +578,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void zoomIn() {
-        viewPort.SetNextZoom();
+        viewPort.SetPreviousZoom();
     }
 
     public void zoomOut() {
-        viewPort.SetPreviousZoom();
+        viewPort.SetNextZoom();
     }
 
     public void zoomFit() {
