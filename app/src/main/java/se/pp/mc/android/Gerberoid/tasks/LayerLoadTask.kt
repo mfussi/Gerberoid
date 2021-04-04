@@ -22,7 +22,9 @@ class LayerLoadTask(applicationContext: Context, private val layers: Layers, cal
     }
 
     override fun doInBackground(vararg request: LoadRequest<out SourceDescriptor>): Pair<Boolean, List<GerberFile<out SourceDescriptor>>> {
-        Looper.prepare()
+        if (Looper.myLooper() == null) {
+            Looper.prepare();
+        }
 
         var success = true
         val firstLayer = this.layers.activeLayer
@@ -61,6 +63,7 @@ class LayerLoadTask(applicationContext: Context, private val layers: Layers, cal
 
             is UriSourceDescriptor -> toInternalLayerFile(context, request.gfile.source.uri, layer)
             is FileSourceDescriptor -> toInternalLayerFile(context, request.gfile.source.file, layer)
+            is StringSourceDescriptor -> toInternalLayerFile(context, request.gfile.source.data, layer)
             else -> null
 
         }
@@ -102,6 +105,18 @@ data class UriSourceDescriptor(val uri : Uri) : SourceDescriptor, Serializable {
 
     override fun type(): String {
         return "uri"
+    }
+
+}
+
+data class StringSourceDescriptor(val data : String) : SourceDescriptor, Serializable {
+
+    override fun asString(): String {
+        return data
+    }
+
+    override fun type(): String {
+        return "string"
     }
 
 }

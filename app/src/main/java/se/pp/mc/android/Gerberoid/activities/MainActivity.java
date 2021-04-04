@@ -27,6 +27,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Build;
@@ -54,6 +55,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import se.pp.mc.android.Gerberoid.GerberoidApplication;
+import se.pp.mc.android.Gerberoid.WebServer;
 import se.pp.mc.android.Gerberoid.adapters.LayerSpinnerAdapter;
 import se.pp.mc.android.Gerberoid.gerber.DisplayOptions;
 import se.pp.mc.android.Gerberoid.model.GerberZipEntry;
@@ -68,6 +70,7 @@ import se.pp.mc.android.Gerberoid.gerber.GerberViewer;
 import se.pp.mc.android.Gerberoid.gerber.Layers;
 import se.pp.mc.android.Gerberoid.R;
 import se.pp.mc.android.Gerberoid.gerber.ViewPort;
+import se.pp.mc.android.Gerberoid.tasks.StringSourceDescriptor;
 import se.pp.mc.android.Gerberoid.tasks.UriSourceDescriptor;
 import se.pp.mc.android.Gerberoid.utils.Preferences;
 import se.pp.mc.android.Gerberoid.views.ToolsDrawer;
@@ -98,6 +101,8 @@ public class MainActivity extends AppCompatActivity {
 
     int defaultSystemUI;
 
+    private WebServer server;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +110,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar = (Toolbar) findViewById(R.id.toolbar_bottom);
+
+        server = new WebServer(6060, "/api/control/");
 
         btnAdd = findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(v -> addLayers(v));
@@ -318,6 +325,8 @@ public class MainActivity extends AppCompatActivity {
         final Preferences prefs = ((GerberoidApplication)getApplication()).getPreferences();
         prefs.storeDisplayOptions(displayOptions);
         prefs.storeLayerColors(layers);
+
+        server.stop();
         super.onStop();
     }
 
@@ -407,7 +416,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void clearLayers() {
+    public void clearLayers() {
         layers.Clear_DrawLayers();
         layerSpinner.setSelection(layers.getActiveLayer());
     }
@@ -483,6 +492,12 @@ public class MainActivity extends AppCompatActivity {
     };
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        server.start(this);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case REQUEST_SELECT_ARCHIVE:
@@ -552,6 +567,57 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void enableFullscreen(boolean enable) {
+
+        if(enable) {
+            showFullscreen();
+        } else {
+            exitFullscreen();
+        }
+
+    }
+
+    public void zoomIn() {
+        viewPort.SetNextZoom();
+    }
+
+    public void zoomOut() {
+        viewPort.SetPreviousZoom();
+    }
+
+    public void zoomFit() {
+        viewPort.Zoom_Automatique();
+    }
+
+    public void enableOverlay(boolean enable) {
+
+        if(enable){
+            showOverlay();
+        } else {
+            hideOverlay();
+        }
+
+    }
+
+    public void load(String data, boolean gerber) {
+
+        final List<LoadRequest<StringSourceDescriptor>> loadRequests = new ArrayList<>();
+        loadRequests.add(new LoadRequest<>(new GerberFile<>(new StringSourceDescriptor(data), (gerber) ? FileType.GERBER : FileType.DRILL)));
+        new LayerLoadTask(getApplicationContext(), layers, mLoadCallback).execute(loadRequests.toArray(new LoadRequest[0]));
+
+    }
+
+    public void move(int x, int y, boolean abs){
+        viewPort.move(x, y, abs);
+    }
+
+    public void scale(float scale, boolean abs){
+        viewPort.scale(scale, abs);
+    }
+
+    public void setLayerColor(int color, int layer) {
+        layers.SetLayerColor(layer, color);
+    }
 
 }
 

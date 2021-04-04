@@ -3,7 +3,12 @@ package se.pp.mc.android.Gerberoid.utils;
 import android.content.Context;
 import android.net.Uri;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -155,7 +160,7 @@ public class FileUtils {
         return true;
     }
 
-
+    @NonNull
     public static File toInternalLayerFile(Context context, Uri uri, int currentLayer) {
 
         File dataDir = context.getFilesDir();
@@ -165,12 +170,32 @@ public class FileUtils {
 
     }
 
+    @NonNull
     public static File toInternalLayerFile(Context context, File file, int currentLayer) {
 
         File dataDir = context.getFilesDir();
         File output = new File(dataDir.getAbsolutePath() + "/layers/" + currentLayer + ".layer");
         FileUtils.copyFile(file, output);
         return output;
+
+    }
+
+    @Nullable
+    public static File toInternalLayerFile(Context context, String data, int currentLayer) {
+
+        try {
+
+            File dataDir = context.getFilesDir();
+            File output = new File(dataDir.getAbsolutePath() + "/layers/" + currentLayer + ".layer");
+            InputStream stream = new BufferedInputStream(new ByteArrayInputStream(data.getBytes()));
+
+            FileUtils.writeToFile(stream, output);
+
+            return output;
+
+        } catch (Exception e){
+            return null;
+        }
 
     }
 

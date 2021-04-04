@@ -171,6 +171,19 @@ public class GerbviewFrame extends View implements GerberViewer
 	    return true;
 	}
 
+	public void scale(float scale, boolean abs){
+
+		if (abs) {
+			userScale = scale;
+		} else {
+			userScale *= scale;
+		}
+
+		SetOriginAndScale();
+		invalidate();
+
+	}
+
 	@Override
 	public void onScaleEnd(ScaleGestureDetector detector)
 	{
@@ -204,6 +217,20 @@ public class GerbviewFrame extends View implements GerberViewer
 		invalidate();
 	    }
 	    return true;
+	}
+
+	public void move(int x, int y, boolean abs){
+
+		if (abs){
+			logicalOriginX = x;
+			logicalOriginY = y;
+		} else {
+			logicalOriginX += (int) (x / userScale);
+			logicalOriginY += (int) (y / userScale);
+		}
+
+		SetOriginAndScale();
+		invalidate();
 	}
 
 	@Override

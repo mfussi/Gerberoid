@@ -24,4 +24,6 @@ public interface ViewPort
     public void Zoom_Automatique();
     public boolean SetPreviousZoom();
     public boolean SetNextZoom();
+    public void move(int x, int y, boolean abs);
+    public void scale(float scale, boolean abs);
 }
