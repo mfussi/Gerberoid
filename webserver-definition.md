@@ -1,7 +1,7 @@
 
 # Gerberoid
 
-
+A REST Api to remote control the gerberoid app. Load gerber and drill files, move, scale the display. Change visiblities.
 
 ## Indices
 
@@ -39,7 +39,7 @@ Removes all layers from current view.
 ```bash
 Method: POST
 Type: 
-URL: http://localhost:6060/api/control/clear
+URL: http://{{host}}:6060/api/control/clear
 ```
 
 
@@ -55,7 +55,7 @@ Toggles the fullscreen. enable = true/false
 ```bash
 Method: POST
 Type: 
-URL: http://localhost:6060/api/control/fullscreen
+URL: http://{{host}}:6060/api/control/fullscreen
 ```
 
 
@@ -64,7 +64,7 @@ URL: http://localhost:6060/api/control/fullscreen
 
 | Key | Value | Description |
 | --- | ------|-------------|
-| enable | true |  |
+| enable | true | true / false |
 
 
 
@@ -79,7 +79,7 @@ Sets the layer colors. Color must be between 0 and 29, see definition of colors 
 ```bash
 Method: POST
 Type: 
-URL: http://localhost:6060/api/control/layer/color
+URL: http://{{host}}:6060/api/control/layer/color
 ```
 
 
@@ -88,8 +88,8 @@ URL: http://localhost:6060/api/control/layer/color
 
 | Key | Value | Description |
 | --- | ------|-------------|
-| color | 4 |  |
-| layer | 0 |  |
+| color | 4 | gerberoid layer color index (0 - 28) |
+| layer | 0 | layer index (0 - 31) |
 
 
 
@@ -104,7 +104,7 @@ Sets the layer visibility. Layer must be between 0 and 31.
 ```bash
 Method: POST
 Type: 
-URL: http://localhost:6060/api/control/layer/visibility
+URL: http://{{host}}:6060/api/control/layer/visibility
 ```
 
 
@@ -113,8 +113,8 @@ URL: http://localhost:6060/api/control/layer/visibility
 
 | Key | Value | Description |
 | --- | ------|-------------|
-| visibility | true |  |
-| layer | 0 |  |
+| visibility | true | visible (true) or hidden (false) |
+| layer | 0 | layer index (0 - 31) |
 
 
 
@@ -129,7 +129,7 @@ Loads a new layer with a drill file. The gerber file needs to be provided as POS
 ```bash
 Method: POST
 Type: FILE
-URL: http://localhost:6060/api/control/load/drill
+URL: http://{{host}}:6060/api/control/load/drill
 ```
 
 
@@ -145,7 +145,7 @@ Loads a new layer with a gerber file. The gerber file needs to be provided as PO
 ```bash
 Method: POST
 Type: FILE
-URL: http://localhost:6060/api/control/load/gerber
+URL: http://{{host}}:6060/api/control/load/gerber
 ```
 
 
@@ -161,7 +161,7 @@ Moves the viewport of the gerber frame. Given x and y coordinates (in pixels). T
 ```bash
 Method: POST
 Type: 
-URL: http://localhost:6060/api/control/move
+URL: http://{{host}}:6060/api/control/move
 ```
 
 
@@ -170,9 +170,9 @@ URL: http://localhost:6060/api/control/move
 
 | Key | Value | Description |
 | --- | ------|-------------|
-| x | 0 |  |
-| y | 80 |  |
-| absolute | false |  |
+| x | 0 | move on x axis, value in pixels |
+| y | 80 | move on y axis, value in pixels |
+| absolute | false | given coordinates in absolute (true) or relative (false) values |
 
 
 
@@ -187,7 +187,7 @@ Toggles overlay mode. If enabled an color correction overlay will be shown. enab
 ```bash
 Method: POST
 Type: 
-URL: http://localhost:6060/api/control/overlay
+URL: http://{{host}}:6060/api/control/overlay
 ```
 
 
@@ -196,7 +196,7 @@ URL: http://localhost:6060/api/control/overlay
 
 | Key | Value | Description |
 | --- | ------|-------------|
-| enable | false |  |
+| enable | false | true / false |
 
 
 
@@ -211,7 +211,7 @@ Sets the scale of the viewport of the gerber frame. Property scale can be provid
 ```bash
 Method: POST
 Type: 
-URL: http://localhost:6060/api/control/scale
+URL: http://{{host}}:6060/api/control/scale
 ```
 
 
@@ -220,8 +220,8 @@ URL: http://localhost:6060/api/control/scale
 
 | Key | Value | Description |
 | --- | ------|-------------|
-| scale | 1.2 |  |
-| absolute | false |  |
+| scale | 1.2 | scale factor (float) |
+| absolute | false | given scale factor in absolute (true) or relative (false) value |
 
 
 
@@ -236,7 +236,7 @@ Zoom the viewport to best fit.
 ```bash
 Method: POST
 Type: 
-URL: http://localhost:6060/api/control/zoom/fit
+URL: http://{{host}}:6060/api/control/zoom/fit
 ```
 
 
@@ -252,7 +252,7 @@ Zoom the viewport to the next zoom level.
 ```bash
 Method: POST
 Type: 
-URL: http://localhost:6060/api/control/zoom/in
+URL: http://{{host}}:6060/api/control/zoom/in
 ```
 
 
@@ -268,11 +268,11 @@ Zoom the viewport to the previous zoom level.
 ```bash
 Method: POST
 Type: 
-URL: http://localhost:6060/api/control/zoom/out
+URL: http://{{host}}:6060/api/control/zoom/out
 ```
 
 
 
 ---
 [Back to top](#gerberoid)
-> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2021-04-05 00:33:13 by [docgen](https://github.com/thedevsaddam/docgen)
+> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2021-04-05 11:04:31 by [docgen](https://github.com/thedevsaddam/docgen)

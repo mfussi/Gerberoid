@@ -2,6 +2,7 @@
 	"info": {
 		"_postman_id": "c6eae7c3-5537-4189-b9ad-4937990304ec",
 		"name": "Gerberoid",
+		"description": "A REST Api to remote control the gerberoid app. Load gerber and drill files, move, scale the display. Change visiblities.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -11,10 +12,10 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:6060/api/control/fullscreen?enable=true",
+					"raw": "http://{{host}}:6060/api/control/fullscreen?enable=true",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
 					"port": "6060",
 					"path": [
@@ -25,7 +26,8 @@
 					"query": [
 						{
 							"key": "enable",
-							"value": "true"
+							"value": "true",
+							"description": "true / false"
 						}
 					]
 				},
@@ -39,10 +41,10 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:6060/api/control/overlay?enable=false",
+					"raw": "http://{{host}}:6060/api/control/overlay?enable=false",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
 					"port": "6060",
 					"path": [
@@ -53,7 +55,8 @@
 					"query": [
 						{
 							"key": "enable",
-							"value": "false"
+							"value": "false",
+							"description": "true / false"
 						}
 					]
 				},
@@ -67,10 +70,10 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:6060/api/control/move?x=0&y=80&absolute=false",
+					"raw": "http://{{host}}:6060/api/control/move?x=0&y=80&absolute=false",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
 					"port": "6060",
 					"path": [
@@ -81,15 +84,18 @@
 					"query": [
 						{
 							"key": "x",
-							"value": "0"
+							"value": "0",
+							"description": "move on x axis, value in pixels"
 						},
 						{
 							"key": "y",
-							"value": "80"
+							"value": "80",
+							"description": "move on y axis, value in pixels"
 						},
 						{
 							"key": "absolute",
-							"value": "false"
+							"value": "false",
+							"description": "given coordinates in absolute (true) or relative (false) values"
 						}
 					]
 				},
@@ -103,10 +109,10 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:6060/api/control/scale?scale=1.2&absolute=false",
+					"raw": "http://{{host}}:6060/api/control/scale?scale=1.2&absolute=false",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
 					"port": "6060",
 					"path": [
@@ -117,11 +123,13 @@
 					"query": [
 						{
 							"key": "scale",
-							"value": "1.2"
+							"value": "1.2",
+							"description": "scale factor (float)"
 						},
 						{
 							"key": "absolute",
-							"value": "false"
+							"value": "false",
+							"description": "given scale factor in absolute (true) or relative (false) value"
 						}
 					]
 				},
@@ -135,10 +143,10 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:6060/api/control/layer/color?color=4&layer=0",
+					"raw": "http://{{host}}:6060/api/control/layer/color?color=4&layer=0",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
 					"port": "6060",
 					"path": [
@@ -150,11 +158,13 @@
 					"query": [
 						{
 							"key": "color",
-							"value": "4"
+							"value": "4",
+							"description": "gerberoid layer color index (0 - 28)"
 						},
 						{
 							"key": "layer",
-							"value": "0"
+							"value": "0",
+							"description": "layer index (0 - 31)"
 						}
 					]
 				},
@@ -168,10 +178,10 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:6060/api/control/layer/visibility?visibility=true&layer=0",
+					"raw": "http://{{host}}:6060/api/control/layer/visibility?visibility=true&layer=0",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
 					"port": "6060",
 					"path": [
@@ -183,11 +193,13 @@
 					"query": [
 						{
 							"key": "visibility",
-							"value": "true"
+							"value": "true",
+							"description": "visible (true) or hidden (false)"
 						},
 						{
 							"key": "layer",
-							"value": "0"
+							"value": "0",
+							"description": "layer index (0 - 31)"
 						}
 					]
 				},
@@ -207,10 +219,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:6060/api/control/load/gerber",
+					"raw": "http://{{host}}:6060/api/control/load/gerber",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
 					"port": "6060",
 					"path": [
@@ -236,10 +248,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:6060/api/control/load/drill",
+					"raw": "http://{{host}}:6060/api/control/load/drill",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
 					"port": "6060",
 					"path": [
@@ -259,10 +271,10 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:6060/api/control/clear",
+					"raw": "http://{{host}}:6060/api/control/clear",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
 					"port": "6060",
 					"path": [
@@ -281,10 +293,10 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:6060/api/control/zoom/in",
+					"raw": "http://{{host}}:6060/api/control/zoom/in",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
 					"port": "6060",
 					"path": [
@@ -304,10 +316,10 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:6060/api/control/zoom/out",
+					"raw": "http://{{host}}:6060/api/control/zoom/out",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
 					"port": "6060",
 					"path": [
@@ -327,10 +339,10 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:6060/api/control/zoom/fit",
+					"raw": "http://{{host}}:6060/api/control/zoom/fit",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
 					"port": "6060",
 					"path": [
