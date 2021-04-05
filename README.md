@@ -10,7 +10,7 @@ is part of the [KiCad][1] EDA suite.
 Webserver
 -------
 This Gerberoid Fork can be remote controlled using an REST API. See the [documentation](webserver-definition.md).
-Simply replace http://{{host}}}:6060 with the IP of your android device, e.g.: http://192.168.0.1:6060
+Simply replace http://{{host}}:6060 with the IP of your android device, e.g.: http://192.168.0.1:6060
 
 For example - enable fullscreen mode:
 [POST] http://192.168.0.1:6060/api/control/fullscreen?enable=true
